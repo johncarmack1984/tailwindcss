@@ -1,17 +1,19 @@
 import { expect, test } from 'vitest'
 import { type DesignSystem } from './design-system'
-import { __unstable__loadDesignSystem } from './index'
+import { __unstable__loadDesignSystem, loadDesignSystem } from './index'
+
+const css = `
+  @theme {
+    --spacing-1: 0.25rem;
+    --spacing-3: 0.75rem;
+    --spacing-4: 1rem;
+    --color-red-500: red;
+    --color-blue-500: blue;
+  }
+`
 
 function loadDesign() {
-  return __unstable__loadDesignSystem(`
-    @theme {
-      --spacing-1: 0.25rem;
-      --spacing-3: 0.75rem;
-      --spacing-4: 1rem;
-      --color-red-500: red;
-      --color-blue-500: blue;
-    }
-  `)
+  return __unstable__loadDesignSystem(css)
 }
 
 const table = [
@@ -37,6 +39,15 @@ const table = [
 
 test.each(table)('sorts classes: "%s" -> "%s"', async (input, expected) => {
   expect(sortClasses(input, await loadDesign())).toEqual(expected)
+})
+
+test('`__unstable__loadDesignSystem` is an alias of `loadDesignSystem`', async () => {
+  expect(__unstable__loadDesignSystem).toBe(loadDesignSystem)
+
+  let design = await loadDesignSystem(css)
+  for (let [input, expected] of table) {
+    expect(sortClasses(input, design)).toEqual(expected)
+  }
 })
 
 test.skip('group, peer, and dark have their own order', async () => {

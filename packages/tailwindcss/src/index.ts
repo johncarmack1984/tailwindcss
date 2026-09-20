@@ -859,10 +859,16 @@ export async function compile(
   }
 }
 
-export async function __unstable__loadDesignSystem(css: string, opts: CompileOptions = {}) {
+export async function loadDesignSystem(
+  css: string,
+  opts: CompileOptions = {},
+): Promise<DesignSystem> {
   let result = await parseCss(CSS.parse(css, { from: opts.from }), opts)
   return result.designSystem
 }
+
+// Used by IntelliSense and the Prettier plugin
+export { loadDesignSystem as __unstable__loadDesignSystem }
 
 export default function postcssPluginWarning() {
   throw new Error(

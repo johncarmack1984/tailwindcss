@@ -5,9 +5,9 @@ import fsPromises from 'node:fs/promises'
 import path from 'node:path'
 import { pathToFileURL } from 'node:url'
 import {
-  __unstable__loadDesignSystem as ___unstable__loadDesignSystem,
   compile as _compile,
   compileAst as _compileAst,
+  loadDesignSystem as _loadDesignSystem,
   Features,
   Polyfills,
 } from 'tailwindcss'
@@ -103,8 +103,8 @@ export async function compile(css: string, options: CompileOptions) {
   return compiler
 }
 
-export async function __unstable__loadDesignSystem(css: string, { base }: { base: string }) {
-  return ___unstable__loadDesignSystem(css, {
+export async function loadDesignSystem(css: string, { base }: { base: string }) {
+  return _loadDesignSystem(css, {
     base,
     async loadModule(id, base) {
       return loadModule(id, base, () => {})
@@ -114,6 +114,9 @@ export async function __unstable__loadDesignSystem(css: string, { base }: { base
     },
   })
 }
+
+// Used by IntelliSense and the Prettier plugin
+export { loadDesignSystem as __unstable__loadDesignSystem }
 
 export async function loadModule(
   id: string,
