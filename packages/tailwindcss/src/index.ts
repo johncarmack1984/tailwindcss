@@ -819,7 +819,7 @@ export async function compileAst(
   }
 }
 
-export type { DecodedSourceMap }
+export type { DecodedSourceMap, DesignSystem }
 
 export async function compile(
   css: string,
